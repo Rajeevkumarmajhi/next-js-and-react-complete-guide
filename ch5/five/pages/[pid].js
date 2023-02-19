@@ -5,9 +5,9 @@ import path from 'path';
 function ProductDetailPage(props) {
     const { loadedProduct } = props;
 
-    // if(!loadedProduct){
-    //     return <p>Loading...</p>
-    // }
+    if(!loadedProduct){
+        return <p>Loading...</p>
+    }
     return (
         <Fragment>
             <h1>{loadedProduct.title}</h1>
@@ -31,9 +31,12 @@ export async function getStaticProps(context) {
     const productId = params.pid;
 
     const data = await getData();
-    
 
     const product = data.products.find(product => product.id === productId);
+
+    if(!product){
+        return { notFound:true };
+    }
 
     return {
         props: {
@@ -52,6 +55,6 @@ export async function getStaticPaths() {
 
     return {
         paths: pathWithParams,
-        fallback: false,
+        fallback: true,
     }
 }
