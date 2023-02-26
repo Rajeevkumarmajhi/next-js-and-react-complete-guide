@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react"
 import useSWR from 'swr'
 
+const fetcher = (url) => fetch(url).then((res) => res.json());
+
 function LastSale() {
 
     const [sales,setSales] = useState();
     // const [isLoading,setIsLoading] = useState(false);
 
-    const { data , error } = useSWR('https://react-getting-started-122ec-default-rtdb.asia-southeast1.firebasedatabase.app/sales.json');
+
+    const { data , error } = useSWR('https://react-getting-started-122ec-default-rtdb.asia-southeast1.firebasedatabase.app/sales.json',fetcher);
+
+    if(error) return "An error has occured.";
     
     useEffect(()=>{
         if(data){
