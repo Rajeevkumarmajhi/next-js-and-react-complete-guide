@@ -3,9 +3,9 @@ import useSWR from 'swr'
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
-function LastSale() {
+function LastSale(props) {
 
-    const [sales,setSales] = useState();
+    const [sales,setSales] = useState(props.sales);
     // const [isLoading,setIsLoading] = useState(false);
 
 
@@ -31,7 +31,7 @@ function LastSale() {
         return <p>Failed to load</p>;
     }
 
-    if(!data || !sales){
+    if(!data && !sales){
         return <p>Loading...</p>
     }
 
@@ -44,3 +44,21 @@ function LastSale() {
 }
 
 export default LastSale
+
+export async function getStaticProps(){
+
+    const response = await fetch('https://react-getting-started-122ec-default-rtdb.asia-southeast1.firebasedatabase.app/sales.json');
+    const data = await response.json();
+    const transformedSales = [];
+    for(const key in data){
+        transformedSales.push({ 
+            id:key, 
+            username: data[key].username, 
+            volume : data[key].volume 
+        })
+    }
+    return {
+        props: { sales: transformedSales},
+        revalidate: 10,
+    }
+}
