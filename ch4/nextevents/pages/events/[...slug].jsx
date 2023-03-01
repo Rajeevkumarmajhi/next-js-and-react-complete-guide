@@ -2,7 +2,6 @@ import EventList from '@/components/events/event-list';
 import ResultsTitle from '@/components/events/results-title';
 import Button from '@/components/ui/button';
 import ErrorAlert from '@/components/ui/error-alert';
-import { getFilteredEvents } from '@/helpers/api-util';
 import Head from 'next/head';
 import { useRouter } from 'next/router'
 import React, { Fragment, useEffect, useState } from 'react'
@@ -33,8 +32,17 @@ function FilteredEventPage(props) {
 
     },[data]);
 
+    let pageHeadData = (
+        <Head>
+            <title>Filtered Events By Rajeev Kumar Majhi</title>
+            <meta name='description' content='A list of filtered events' />
+        </Head>
+    );
+    
+
     if (!loadedEvents) {
         return <Fragment>
+            {pageHeadData}
             <ErrorAlert>
                 <p className='center'>Loading...</p>
             </ErrorAlert>
@@ -50,8 +58,16 @@ function FilteredEventPage(props) {
     const numYear = +filteredYear;
     const numMonth = +filteredMonth;
 
+    pageHeadData = (
+        <Head>
+            <title>Next Js Filtered Events By Rajeev Majhi</title>
+            <meta name="description" content={`All events for ${numMonth}/${numYear}`} />
+        </Head>
+    );
+
     if (isNaN(numYear) || isNaN(numMonth) || numYear > 2030 || numYear < 2021 || numMonth < 1 || numMonth > 12 || error) {
         return <Fragment>
+            {pageHeadData}
             <ErrorAlert>
                 <p>Invalid filter ! Please adjust your values</p>
             </ErrorAlert>
@@ -70,6 +86,7 @@ function FilteredEventPage(props) {
     if (!filteredEvents || filteredEvents.length === 0) {
         return (
             <Fragment>
+                {pageHeadData}
                 <ErrorAlert>
                     <p>No events found for the chosen filter!</p>
                 </ErrorAlert>
@@ -85,10 +102,7 @@ function FilteredEventPage(props) {
 
     return (
         <Fragment>
-            <Head>
-                <title>Next Js Filtered Events By Rajeev Majhi</title>
-                <meta name="description" content={`All events for ${numMonth}/${numYear}`} />
-            </Head>
+            {pageHeadData}
             <ResultsTitle date={date} />
             <EventList items={filteredEvents} />
         </Fragment>
