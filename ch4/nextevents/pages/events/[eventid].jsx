@@ -4,6 +4,7 @@ import EventSummary from '@/components/event-detail/event-summary';
 import React, { Fragment } from 'react'
 import { getEventById, getFeaturedEvents } from '@/helpers/api-util';
 import Head from 'next/head';
+import Comments from '@/components/input/comments';
 
 function eventDetailPage(props) {
 
@@ -25,6 +26,7 @@ function eventDetailPage(props) {
                 <EventContent>
                     <p> { event.description } </p>
                 </EventContent>
+                <Comments eventId={event.id} />
             </Fragment>
         </div>
     )
