@@ -1,9 +1,8 @@
-export default function handler(req, res) {
+function handler(req, res) {
 
     const eventId = req.query.eventId;
 
-
-    if(req.method === "POST"){
+    if(req.method == "POST"){
 
         const {email,name,text} = req.body;
 
@@ -18,13 +17,11 @@ export default function handler(req, res) {
             name,
             text
         }
-        
-        console.log(newComment);
 
         res.status(201).json({message:"Comment saved successfully",comment: newComment});
     }
 
-    if(req.method === "GET"){
+    if(req.method == "GET"){
         const dummyList = [
             { id:'c1', name: 'Max', text: 'A first comment!' },
             { id:'c2', name: 'Rajeev', text: 'A second comment!' },
@@ -32,6 +29,6 @@ export default function handler(req, res) {
 
         res.status(200).json({ comments: dummyList });
     }
-
-
 }
+
+export default handler;
