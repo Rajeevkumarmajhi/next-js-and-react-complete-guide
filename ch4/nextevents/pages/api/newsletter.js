@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 
 const url = 'mongodb+srv://rajeevkumarmajhi:Gamerboy7@cluster0.4sbdhxa.mongodb.net/?retryWrites=true&w=majority';
 const client = new MongoClient(url);
-const dbName = 'newsletter';
+const dbName = 'events';
 
 export default async function handler(req, res) {
     
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
             res.status(422).json({ message: 'Invalid Email Address' });
             return;
         }
-        await db.collection('emails').insertOne({email:userEmail});
+        await db.collection('newsletters').insertOne({email:userEmail});
 
         client.close();
         res.status(201).json({ message: 'Signed Up!' })
