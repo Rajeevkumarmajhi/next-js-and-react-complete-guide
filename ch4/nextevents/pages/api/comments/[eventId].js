@@ -7,10 +7,10 @@ const dbName = 'events';
 async function handler(req, res) {
 
     const eventId = req.query.eventId;
-    await client.connect();
-        const db = client.db(dbName);
-
+    
     if(req.method == "POST"){
+        await client.connect();
+        const db = client.db(dbName);
 
         const {email,name,text} = req.body;
 
@@ -26,20 +26,22 @@ async function handler(req, res) {
             eventId
         }
         
-        const result = await db.collection('comments').insertOne({ newComment });
+        const result = await db.collection('comments').insertOne( newComment );
 
         newComment.id = result.insertedId;
 
         res.status(201).json({message:"Comment saved successfully",comment: newComment});
+        return;
     }
 
     if(req.method == "GET"){
-        const dummyList = [
-            { id:'c1', name: 'Max', text: 'A first comment!' },
-            { id:'c2', name: 'Rajeev', text: 'A second comment!' },
-        ];
 
-        res.status(200).json({ comments: dummyList });
+        await client.connect();
+        const db = client.db(dbName);
+
+        const documents = await db.collection('comments').find().sort({ _id: -1 }).toArray();
+
+        res.status(200).json({ comments: documents });
     }
 }
 
