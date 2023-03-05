@@ -1,18 +1,8 @@
-import { MongoClient } from 'mongodb';
+import { connectDatabase, insertDocument } from '@/helpers/db-util';
 
 // const url = 'mongodb+srv://rajeevkumarmajhi:Gamerboy7@cluster0.4sbdhxa.mongodb.net/?retryWrites=true&w=majority';
 // const client = new MongoClient(url);
 // const dbName = 'events';
-
-async function connectDatabase(){
-    const client = await MongoClient.connect('mongodb+srv://rajeevkumarmajhi:Gamerboy7@cluster0.4sbdhxa.mongodb.net/events?retryWrites=true&w=majority');
-    return client;
-}
-
-async function insertDocument(client,document){
-    let db = client.db();
-    await db.collection('newsletters').insertOne(document);
-}
 
 async function handler(req, res) {
     if (req.method === "POST") {
@@ -32,7 +22,7 @@ async function handler(req, res) {
         }
 
         try{
-            await insertDocument(client,{email:userEmail});
+            await insertDocument(client,'newsletters',{email:userEmail});
             client.close();
         }catch(error){
             res.status(500).json({message:"Data cannot be inserted!"});
