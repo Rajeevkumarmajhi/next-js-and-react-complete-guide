@@ -1,4 +1,4 @@
-import { connectDatabase, getAllDocument, insertDocument } from '@/helpers/db-util';
+import { connectDatabase, getEventComments, insertDocument } from '@/helpers/db-util';
 
 // const url = 'mongodb+srv://rajeevkumarmajhi:Gamerboy7@cluster0.4sbdhxa.mongodb.net/?retryWrites=true&w=majority';
 // const client = new MongoClient(url);
@@ -44,8 +44,7 @@ async function handler(req, res) {
     if(req.method == "GET"){
 
         try{
-            let documents = await getAllDocument(client,'comments',{ _id: -1 });
-            
+            let documents = await getEventComments(client,'comments',{ _id: -1 },eventId);
             res.status(200).json({ comments: documents });
         }catch(error){
             res.status(500).json({message:"Data fetching failed!"});

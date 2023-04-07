@@ -16,3 +16,9 @@ export async function getAllDocument(client,collection,sort){
     let documents = await db.collection('comments').find().sort(sort).toArray();
     return documents;
 }
+
+export async function getEventComments(client,collection,sort,eventId){
+    let db = client.db();
+    let documents = await db.collection('comments').find({"eventId":eventId}).sort(sort).toArray();
+    return documents;
+}

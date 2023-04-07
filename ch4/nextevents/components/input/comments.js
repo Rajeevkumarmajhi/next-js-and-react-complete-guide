@@ -54,6 +54,12 @@ function Comments(props) {
                 message:"Your comment was saved",
                 status:"success",
             });
+            if(showComments){
+                setShowComments(false);
+                setTimeout(() => {
+                    setShowComments(true);
+                }, 2000);
+            }
             
         }).catch(error =>{
             notificationCtx.showNotification({
